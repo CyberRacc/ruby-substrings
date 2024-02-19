@@ -1,30 +1,18 @@
 # typed: true
 
-#Implement a method #substrings that takes a word as the first argument
-# and then an array of valid substrings (your dictionary) as the second argument.
-# It should return a hash listing each substring (case insensitive)
-# that was found in the original string and how many times it was found.
-
 dictionary = ["below", "down", "go", "going", "horn", "how", "howdy", "it", "i", "low", "own", "part", "partner", "sit"]
 
 def substrings(word, dictionary_array)
     string_count = {} # Create an empty hash
-    scan_output = []
-    word_array = word.split(' ') # Creates an array of substrings from the given word string. Seperate substrings by spaces.
-
-    word_array.each do |word_from_array|
-        clean_substring = word_from_array.gsub(/[[:punct:]]/, '').downcase # Remove punctuation and downcase the string
-        scan_output.push(clean_substring.scan(word_from_array))
-    end
-
-    dictionary_array.each do |dictionary_word| # 
-        puts scan_output
-        string_count[dictionary_word] = scan_output.count(dictionary_word) # Something called the scan method may work here.
+    clean_string = word.downcase.gsub(/[[:punct:]]/, '') # Cleans the word value to remove punctuation and convert to lower case.
+    dictionary_array.each do |dictionary_word| # Iterate over each word in the dictionary_array
+        matches = clean_string.scan(dictionary_word) # Scans the clean_string for anything that matches the current dictionary word. .scan returns an array.
+        count = matches.length # Count is equal to the length of the matches array, essentially counting the number of matches the previous line scan method found.
+        if count > 0 # Check to make sure sure we aren't pushing 0 values where there are no matches to the hash.
+            string_count[dictionary_word] = count
+        end
     end
 
     # Return a hash containing each substring as the key, and how many times it was found as the value.
     return string_count
 end
-
-puts substrings("below", dictionary)
-puts substrings("Howdy partner, sit down! How's it going?", dictionary)
